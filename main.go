@@ -10,6 +10,7 @@ import (
 	// Import backends so that they initialize
 	_ "github.com/joyent/containerpilot/discovery/consul"
 	_ "github.com/joyent/containerpilot/discovery/etcd"
+	_ "github.com/joyent/containerpilot/discovery/eureka"
 )
 
 // Main executes the containerpilot CLI

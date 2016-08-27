@@ -35,3 +35,6 @@ Godeps/_workspace/
 
 # fake paths from overlaying volumes in Docker
 /src
+
+# Just some sample config to play around with
+test.config
