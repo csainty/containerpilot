@@ -1,3 +1,9 @@
+# Eureka fork
+
+This fork has an experimental Eureka backend added.  
+The Eureka client code was lifted from https://github.com/ArthurHlt/go-eureka-client, trimmed down for my use-case and patched as needed.  
+You are free to use this fork, but it comes with no warranty or promise of support.
+
 # ContainerPilot
 
 *An application-centric micro-orchestrator that automates the process of service discovery, configuration, and lifecycle management inside the container, so you can focus on your apps.*
