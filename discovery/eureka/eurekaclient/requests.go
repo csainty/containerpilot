@@ -9,7 +9,6 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
-	"strconv"
 	"sync"
 	"time"
 
@@ -105,7 +104,7 @@ func NewRawRequest(method, relativePath string, body []byte, cancel <-chan bool)
 	}
 }
 
-func NewInstanceInfo(instanceId, hostName, app, ip string, port int, ttl uint, isSsl bool) *InstanceInfo {
+func NewInstanceInfo(instanceId, vipAddress, app, ip string, port int, ttl uint, isSsl bool) *InstanceInfo {
 	dataCenterInfo := &DataCenterInfo{
 		Name:     "MyOwn",
 		Class:    "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
@@ -116,34 +115,27 @@ func NewInstanceInfo(instanceId, hostName, app, ip string, port int, ttl uint, i
 		DurationInSecs:         ttl,
 	}
 	instanceInfo := &InstanceInfo{
-		InstanceId:     instanceId,
-		HostName:       hostName,
-		App:            app,
-		IpAddr:         ip,
-		Status:         UP,
-		DataCenterInfo: dataCenterInfo,
-		LeaseInfo:      leaseInfo,
+		InstanceId:       instanceId,
+		HostName:         ip,
+		App:              app,
+		IpAddr:           ip,
+		Status:           UP,
+		DataCenterInfo:   dataCenterInfo,
+		LeaseInfo:        leaseInfo,
+		SecureVipAddress: vipAddress,
+		VipAddress:       vipAddress,
 	}
-	stringPort := ""
-	if port != 80 && port != 443 {
-		stringPort = ":" + strconv.Itoa(port)
-	}
-	var protocol string = "http"
 	if isSsl {
-		protocol = "https"
-		instanceInfo.SecureVipAddress = protocol + "://" + hostName + stringPort
 		instanceInfo.SecurePort = &Port{
 			Port:    port,
 			Enabled: true,
 		}
 	} else {
-		instanceInfo.VipAddress = protocol + "://" + hostName + stringPort
 		instanceInfo.Port = &Port{
 			Port:    port,
 			Enabled: true,
 		}
 	}
-	instanceInfo.StatusPageUrl = protocol + "://" + hostName + stringPort + "/info"
 	return instanceInfo
 }
 

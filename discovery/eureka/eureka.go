@@ -72,7 +72,7 @@ func (e *Eureka) registerService(service discovery.ServiceDefinition) error {
 	return e.RegisterInstance(service.Name,
 		eurekaclient.NewInstanceInfo(
 			cleanID(service.ID),
-			service.IPAddress,
+			service.Name,
 			service.Name,
 			service.IPAddress,
 			service.Port,
