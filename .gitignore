@@ -38,3 +38,5 @@ Godeps/_workspace/
 
 # Just some sample config to play around with
 test.config
+
+.idea/

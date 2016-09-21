@@ -116,9 +116,7 @@ etcd:
 release: build
 	mkdir -p release
 	git tag $(VERSION)
-	git push joyent --tags
-	cd build && tar -czf ../release/containerpilot-$(VERSION).tar.gz containerpilot
-	@echo
-	@cd release && sha1sum containerpilot-$(VERSION).tar.gz
-	@cd release && sha1sum containerpilot-$(VERSION).tar.gz > containerpilot-$(VERSION).sha1.txt
-	@echo Upload files in release/ directory to GitHub release.
+	git push origin --tags
+	cd build && tar -czf ../release/containerpilot-$(VERSION).tar.gz containerpilot && cd ..
+	/Users/csainty/gocode/bin/github-release release -u csainty -r containerpilot -t $(VERSION)
+	/Users/csainty/gocode/bin/github-release upload -u csainty -r containerpilot -t $(VERSION) -n containerpilot-$(VERSION).tar.gz -f release/containerpilot-$(VERSION).tar.gz

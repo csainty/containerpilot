@@ -58,7 +58,7 @@ func (e *Eureka) MarkForMaintenance(service *discovery.ServiceDefinition) {
 func (e *Eureka) SendHeartbeat(service *discovery.ServiceDefinition) {
 	_, err := e.GetInstance(service.Name, cleanID(service.ID))
 	if err != nil {
-		log.Infof("%v\nService not registered, registering...", err)
+		log.Infof("Registering service %s in Eureka %s:%v", service.Name, service.IPAddress, service.Port)
 		if err = e.registerService(*service); err != nil {
 			log.Warnf("Service registration failed: %s", err)
 		}
@@ -101,7 +101,7 @@ func (e Eureka) CheckForUpstreamChanges(backendName, backendTag string) bool {
 
 // Compare the two arrays to see if the address or port has changed
 // or if we've added or removed entries.
-func compareForChange(existing, new []eurekaclient.InstanceInfo) (changed bool) {
+func compareForChange(existing, new []eurekaclient.InstanceInfo) bool {
 
 	if len(existing) != len(new) {
 		return true
@@ -110,8 +110,7 @@ func compareForChange(existing, new []eurekaclient.InstanceInfo) (changed bool) 
 	sort.Sort(ByIPAddr(existing))
 	sort.Sort(ByIPAddr(new))
 	for i, ex := range existing {
-		if ex.IpAddr != new[i].IpAddr ||
-			ex.Port != new[i].Port {
+		if ex.IpAddr != new[i].IpAddr || ex.Port.Port != new[i].Port.Port {
 			return true
 		}
 	}
